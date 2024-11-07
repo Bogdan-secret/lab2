@@ -1,25 +1,46 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: './src/index.js',
     output: {
-        filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-        clean: true, 
+        filename: 'bundle.js',
+        assetModuleFilename: 'assets/images/[name][ext]'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(jpe?g|png|gif|svg)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]'
+                        }
+                    }
+                ],
+                type: 'javascript/auto',
+            }
+        ]
     },
     plugins: [
-        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: './src/pages/index.html',
             filename: 'index.html',
+            template: './src/pages/index.html'
         }),
         new HtmlWebpackPlugin({
-            template: './src/pages/about.html',
-            filename: 'about.html',
+            filename: 'news.html',
+            template: './src/pages/news.html'
         }),
-    ],
-    mode: 'development',
+        new HtmlWebpackPlugin({
+            filename: 'photo.html',
+            template: './src/pages/photo.html'
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'rozklad.html',
+            template: './src/pages/rozklad.html'
+        })
+    ]
 };
-
